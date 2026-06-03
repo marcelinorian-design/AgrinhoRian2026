@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rolo do Agro na Escola - Compartilhando Saberes Rurais</title>
+    <style>
+        /* --- VARIÁVEIS DE CORES E ACESSIBILIDADE --- */
+        :root {
+            --primary-color: #1b4d3e; /* Verde escuro (bom contraste) */
+            --secondary-color: #8c6239; /* Marrom terra */
+            --accent-color: #f4f9f4; /* Fundo claro */
+            --text-color: #212529; /* Texto quase preto para leitura */
+            --white: #ffffff;
+            --focus-outline: #0056b3;
+        }
+
+        /* --- RESET E ESTILOS GERAIS --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--white);
+        }
+
+        /* Foco acessível para navegação por teclado */
+        *:focus {
+            outline: 3px solid var(--focus-outline);
+            outline-offset: 2px;
+        }
+
+        /* Link de salto para acessibilidade (Screen Readers) */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            transition: top 0.2s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        /* --- CONTAINER PRINCIPAL --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* --- SEÇÃO SOBRE O PROJETO --- */
+        .about-section {
+            background-color: var(--accent-color);
+            border-left: 5px solid var(--secondary-color);
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .about-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* --- SEÇÃO DE IDEIAS (GRID RESPONSIVO) --- */
+        .ideas-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* --- DINÂMICA INTERATIVA (FORMULÁRIO) --- */
+        .interactive-section {
+            background: #fff;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .interactive-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #123329;
+        }
+
+        /* --- LISTA DE ITENS ENVIADOS --- */
+        .items-list-container {
+            margin-top: 2rem;
+        }
+
+        .items-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .item-row {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-row strong {
+            color: var(--secondary-color);
+        }
+
+        /* --- CONTROLES DE ACESSIBILIDADE FLUTUANTES --- */
+        .accessibility-bar {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .acc-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-weight: bold;
+            width: auto;
+        }
+
+        /* Classe de Alto Contraste via JS */
+        body.high-contrast {
+            --primary-color: #ffff00;
+            --secondary-color: #00ffff;
+            --accent-color: #000000;
+            --text-color: #ffffff;
+            --white: #000000;
+            background-color: #000000;
+        }
+        body.high-contrast .card, body.high-contrast .item-row {
+            border: 2px solid #fff;
+        }
+        body.high-contrast button {
+            color: #000;
+            background-color: #ffff00;
+        }
+
+        /* --- RESPONSIVIDADE ADICIONAL (MEDIA QUERIES) --- */
+        @media (min-width: 768px) {
+            header h1 { font-size: 3rem; }
+            button { width: auto; }
+            .item-row {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
+
+    <header role="banner">
+        <h1>Rolo do Agro na Escola</h1>
+        <p>Aproximando os estudantes do universo agropecuário</p>
+    </header>
+
+    <main id="conteudo-principal" class="container" role="main">
+        
+        <section class="about-section" aria-labelledby="sobre-titulo">
+            <h2 id="sobre-titulo">O que é a dinâmica?</h2>
+            <p>O <strong>Rolo do Agro</strong> é uma atividade escolar criada para conectar a sala de aula ao campo. Cada participante traz um item que represente a produção rural para apresentar sua origem, utilidade e relevância no nosso dia a dia. Uma troca rica de conhecimento e valorização do produtor rural!</p>
+        </section>
+
+        <section class="ideas-section" aria-labelledby="ideias-titulo">
+            <h2 id="ideias-titulo">O que você pode trazer?</h2>
+            <div class="grid">
+                <article class="card">
+                    <h3>🌱 Sementes e Mudas</h3>
+                    <p>Grãos de milho, feijão, soja ou pequenas mudas de plantas aromáticas e frutíferas.</p>
+                </article>
+                <article class="card">
+                    <h3>🍎 Alimentos Frescos</h3>
+                    <p>Frutas, verduras e legumes cultivados na região para falar sobre nutrição e colheita.</p>
+                </article>
+                <article class="card">
+                    <h3>🧀 Derivados do Leite</h3>
+                    <p>Queijos, iogurtes e manteiga para explicar o processo de agroindustrialização.</p>
+                </article>
+                <article class="card">
+                    <h3>🛠️ Ferramentas e Objetos</h3>
+                    <p>Enxadas pequenas, medidores, ferragens ou fotos de maquinários que auxiliam o produtor.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="interactive-section" aria-labelledby="form-titulo">
+            <h2 id="form-titulo">Painel de Ideias dos Alunos</h2>
+            <p style="margin-bottom: 1.5rem;">Simule abaixo o item que você gostaria de levar para o Rolo do Agro!</p>
+            
+            <form id="agroForm">
+                <div class="form-group">
+                    <label prejudices for="aluno">Nome do Aluno:</label>
+                    <input type="text" id="aluno" required placeholder="Digite seu nome completo">
+                </div>
+
+                <div class="form-group">
+                    <label for="categoria">Categoria do Item:</label>
+                    <select id="categoria" required>
+                        <option value="">Selecione uma opção...</option>
+                        <option value="Sementes/Grãos">Sementes e Grãos</option>
+                        <option value="Frutas/Verduras">Frutas e Verduras</option>
+                        <option value="Derivados do Leite">Produtos Derivados do Leite</option>
+                        <option value="Ferramentas">Ferramentas/Tecnologia</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao">O que esse item representa para o Agro?</label>
+                    <textarea id="descricao" rows="3" required placeholder="Explique brevemente a origem e a importância dele..."></textarea>
+                </div>
+
+                <button type="submit">Registrar Minha Ideia</button>
+            </form>
+
+            <div class="items-list-container">
+                <h3>Itens já planejados pela turma:</h3>
+                <ul id="listaItens" class="items-list">
+                    </ul>
+            </div>
+        </section>
+    </main>
+
+    <div class="accessibility-bar" role="complementary" aria-label="Ferramentas de Acessibilidade">
+        <button class="acc-btn" id="btnContraste" aria-label="Alternar Alto Contraste">🌓 Alto Contraste</button>
+        <button class="acc-btn" id="btnTexto" aria-label="Aumentar tamanho do texto">A+</button>
+    </div>
+
+    <script>
+        // --- 1. LÓGICA DO FORMULÁRIO INTERATIVO ---
+        const form = document.getElementById('agroForm');
+        const listaItens = document.getElementById('listaItens');
+
+        // Itens iniciais de exemplo
+        const itensIniciais = [
+            { aluno: "Lucas Silva", categoria: "Sementes/Grãos", descricao: "Vou levar espigas de milho para falar sobre a rotação de culturas." },
+            { aluno: "Mariana Costa", categoria: "Derivados do Leite", descricao: "Queijo artesanal para explicar como o leite vira outro alimento." }
+        ];
+
+        function renderizarItem(aluno, categoria, descricao) {
+            const li = document.createElement('li');
+            li.className = 'item-row';
+            li.innerHTML = `
+                <div>
+                    <strong>${aluno}</strong> (${categoria})
+                    <p>${descricao}</p>
+                </div>
+            `;
+            listaItens.appendChild(li);
+        }
+
+        // Carrega os itens iniciais
+        itensIniciais.forEach(item => renderizarItem(item.aluno, item.categoria, item.descricao));
+
+        // Trata o envio do formulário
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nomeInput = document.getElementById('aluno').value;
+            const catSelect = document.getElementById('categoria').value;
+            const descTextArea = document.getElementById('descricao').value;
+
+            renderizarItem(nomeInput, catSelect, descTextArea);
+
+            // Reseta o formulário e avisa o leitor de tela do sucesso
+            form.reset();
+            alert('Sua ideia para o Rolo do Agro foi adicionada à lista com sucesso!');
+        });
+
+        // --- 2. RECURSOS DE ACESSIBILIDADE (JS) ---
+        
+        // Alternar Alto Contraste
+        const btnContraste = document.getElementById('btnContraste');
+        btnContraste.addEventListener('click', () => {
+            document.body.classList.toggle('high-contrast');
+        });
+
+        // Alternar tamanho da fonte
+        const btnTexto = document.getElementById('btnTexto');
+        let tamanhoFonte Atual = 100;
+        
+        btnTexto.addEventListener('click', () => {
+            tamanhoFonteAtual += 10;
+            if (tamanhoFonteAtual > 130) {
+                tamanhoFonteAtual = 100; // Reseta ao tamanho original se passar de 130%
+            }
+            document.documentElement.style.fontSize = `${tamanhoFonteAtual}%`;
+        });
+    </script>
+</body>
+</html>
